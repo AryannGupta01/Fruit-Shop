@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Payment Gateway</h1>
+    </header>
+    <main>
+        <div class="payment-container">
+            <h2>Confirm Your Order</h2>
+            <div id="order-summary"></div>
+            <button id="confirm-payment" class="checkout-button">Confirm Payment</button>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderSummary = document.getElementById("order-summary");
+            const confirmPaymentButton = document.getElementById("confirm-payment");
+
+            const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+
+            if (!orderDetails) {
+                orderSummary.textContent = "No order found.";
+                confirmPaymentButton.disabled = true;
+                return;
+            }
+
+            // Display order
+            orderDetails.cart.forEach((item) => {
+                const itemDiv = document.createElement("div");
+                itemDiv.textContent = `${item.name} - Rs.${item.price.toFixed(2)} /kg`;
+                orderSummary.appendChild(itemDiv);
+            });
+
+            const totalDiv = document.createElement("p");
+            totalDiv.innerHTML = `<strong>Total: Rs.${orderDetails.total}</strong>`;
+            orderSummary.appendChild(totalDiv);
+
+            confirmPaymentButton.addEventListener("click", () => {
+                alert("Payment successful! Thank you for your purchase.");
+                localStorage.clear();
+                window.location.href = "index.html"; // Return to product listing
+            });
+        });
+    </script>
+</body>
+</html>
